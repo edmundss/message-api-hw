@@ -1,0 +1,629 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Messaging service API documentation",
+        "version": "1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api/v1",
+            "description": "Current version"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Authenticate user and get bearer token to use with API.",
+                "description": "Creates new access token and invalidates previously issued tokens if any",
+                "operationId": "72bf786ad8ff53c7391309c836350a8d",
+                "requestBody": {
+                    "description": "User's credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "description": "User's email address",
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "description": "User's password",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Access Token",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "basicAuth": []
+                    }
+                ]
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Invalidate all tokens issued to user.",
+                "description": "Invalidate all tokens issued to user",
+                "operationId": "5660f1ae61b95f0283dfc205d5ffdad5",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/client": {
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Display a paginated listing of clients.",
+                "description": "Returns paginated list of clients.",
+                "operationId": "35dd2467acaf07336fbe75dde0b7193e",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Store a newly created client in storage.",
+                "operationId": "ab1779d9c9487930e74705e44369eaf2",
+                "requestBody": {
+                    "description": "Client object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Client"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Client"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                }
+            }
+        },
+        "/client/{id}": {
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Display the specified client.",
+                "description": "Returns single client",
+                "operationId": "3ff086baa621d66ea9baf3489505a825",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID specific to this client",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Client"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    },
+                    "500": {
+                        "description": "Server error. Most likely id is not in propper UUID format. See error message for details."
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Update the specified client in storage.",
+                "description": "Overwrite the specified client in storage by providing all attributes",
+                "operationId": "bcff54dc2a014af0dbbf57e0c8672d15",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID specific to this client",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Client object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Client"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    },
+                    "500": {
+                        "description": "Server error. Most likely id is not in propper UUID format. See error message for details."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Remove the specified client from storage.",
+                "description": "Removes single client from storage",
+                "operationId": "de23f38f2d1e2b3707351b83b52bee83",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID specific to this client",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    },
+                    "500": {
+                        "description": "Server error. Most likely id is not in propper UUID format. See error message for details."
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Client"
+                ],
+                "description": "Patch the specified client in storage by providing one or more attributes",
+                "operationId": "7719c649f16d479809d1c6b80f43601b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID specific to this client",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Client object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Client"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    },
+                    "500": {
+                        "description": "Server error. Most likely id is not in propper UUID format. See error message for details."
+                    }
+                }
+            }
+        },
+        "/client/{id}/notifications": {
+            "get": {
+                "tags": [
+                    "Client"
+                ],
+                "summary": "Get client's notifications.",
+                "description": "Display paginated list of notifications for specified client",
+                "operationId": "bfea03cf326055271c8d99514c850054",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID specific to this client",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Client"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Client not found"
+                    },
+                    "500": {
+                        "description": "Server error. Most likely id is not in propper UUID format. See error message for details."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/notification": {
+            "get": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Display a listing of the resource.",
+                "description": "Display list of notifications",
+                "operationId": "1d827a59b0def54b0d6fec288dcae119",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "clientId",
+                        "in": "query",
+                        "description": "Provide a unique ID for specified client to filter messages",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of notifications",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Store a newly created notification in storage.",
+                "operationId": "5e996908224e5e9c706d3fd8ae035edc",
+                "requestBody": {
+                    "description": "Notification object",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Notification"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Notification"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Content"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/notification/bulk": {
+            "post": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Notification bulk store",
+                "description": "Store a multiple newly created notifications in storage.",
+                "operationId": "a21b22f0b964a6c2c103a16b292fece6",
+                "requestBody": {
+                    "description": "Messages to store",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Notification"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/notification/{id}": {
+            "get": {
+                "tags": [
+                    "Notification"
+                ],
+                "summary": "Display the specified resource.",
+                "description": "Returns single notification",
+                "operationId": "9219c0fe0f3e08e9cc79237d6d9fb769",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID specific to this notification",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Notification"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Notification not found"
+                    },
+                    "500": {
+                        "description": "Server error. Most likely id is not in propper UUID format. See error message for details."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Client": {
+                "description": "Client class",
+                "required": [
+                    "firstName",
+                    "lastName",
+                    "email",
+                    "phone"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "primary key ID for the client",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": "true"
+                    },
+                    "firstName": {
+                        "description": "First name of the client",
+                        "type": "string",
+                        "format": "alpha",
+                        "example": "Edmunds"
+                    },
+                    "lastName": {
+                        "description": "Last name of the client",
+                        "type": "string",
+                        "format": "alpha",
+                        "example": "Šuļžanoks"
+                    },
+                    "email": {
+                        "description": "Client's email address",
+                        "type": "string",
+                        "format": "email",
+                        "example": "edmunds.sulzanoks@gmail.com"
+                    },
+                    "phoneNumber": {
+                        "description": "Client's phone number",
+                        "type": "string",
+                        "format": "E.164",
+                        "example": "+37126555298"
+                    }
+                },
+                "type": "object"
+            },
+            "Notification": {
+                "description": "Notification class",
+                "required": [
+                    "clientId",
+                    "channel",
+                    "message"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "primary key ID for the message",
+                        "type": "string",
+                        "format": "uuid",
+                        "readOnly": "true"
+                    },
+                    "clientId": {
+                        "description": "Id of the client",
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "channel": {
+                        "description": "Message delivery channel",
+                        "type": "string",
+                        "enum": [
+                            "sms",
+                            "email"
+                        ],
+                        "example": "sms"
+                    },
+                    "message": {
+                        "description": "Mewssage for client",
+                        "type": "text",
+                        "example": "Molestiae veniam quia ut. Dolores ea quod in. Nam et aut corrupti dolorum. Id et et odit beatae laborum nesciunt."
+                    },
+                    "status": {
+                        "description": "Delivery status of the message: pending, processing, sent, failed",
+                        "type": "text",
+                        "readOnly": "true",
+                        "example": "sent"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    }
+}
