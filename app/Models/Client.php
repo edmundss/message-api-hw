@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-
+use Illuminate\Contracts\Mail\Mailable;
 /**
  * @OA\Schema(
  *  description="Client class",
@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
  *      "firstName",
  *      "lastName",
  *      "email",
- *      "phone"
+ *      "phoneNumber"
  *  },
  *  @OA\Property(
  *      property="id",

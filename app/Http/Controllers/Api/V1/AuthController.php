@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Http\Resources\V1\AuthTokenResource;
 
 class AuthController extends Controller
 {
@@ -53,9 +52,16 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $request->authenticate();
+
+        $user = Auth::user();
         $user->tokens()->delete();
-        return new AuthTokenResource($user->createToken('basic-token'));
+        $reader_token = $user->createToken('reader-token', ['basic']);
+        $editor_token = $user->createToken('editor-token', ['create', 'update', 'delete']);
+        return [
+            'readerAccessToken' => $reader_token->plainTextToken,
+            'editorAccessToken' => $editor_token->plainTextToken,
+        ];
     }
 
 

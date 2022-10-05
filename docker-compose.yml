@@ -26,6 +26,7 @@ services:
             - pgsql
             - mailhog
             - selenium
+            - rabbitmq
     pgsql:
         image: 'postgres:14'
         ports:
@@ -57,6 +58,23 @@ services:
             - '/dev/shm:/dev/shm'
         networks:
             - sail
+    rabbitmq:
+        container_name: "rabbitmq"
+        hostname: rabbitmq
+        image: rabbitmq:3.8-management
+        environment:
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
+            - loopback_users=none
+        ports:
+            - '5672:5672'
+            - '15672:15672'
+        networks:
+            - sail
+        expose:
+            - '5672'
+
+
 networks:
     sail:
         driver: bridge

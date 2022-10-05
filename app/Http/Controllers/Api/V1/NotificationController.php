@@ -124,7 +124,10 @@ class NotificationController extends Controller
             return Arr::except($item, ['clientId']);
         });
 
-        Notification::insert($input->toArray());
+        foreach ($input as $i) {
+            Notification::create($i);
+        }
+
     }
 
     /**

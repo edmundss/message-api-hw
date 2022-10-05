@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Jobs\ProcessNotification;
 
 /**
  * @OA\Schema(
@@ -75,6 +76,10 @@ class Notification extends Model
 
         static::creating(function (Model $model) {
             $model->setAttribute($model->getKeyName(), Str::uuid());
+        });
+
+        static::created(function (Model $model) {
+            ProcessNotification::dispatch($model);
         });
     }
 }

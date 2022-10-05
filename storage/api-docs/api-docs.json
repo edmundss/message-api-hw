@@ -538,7 +538,7 @@
                     "firstName",
                     "lastName",
                     "email",
-                    "phone"
+                    "phoneNumber"
                 ],
                 "properties": {
                     "id": {

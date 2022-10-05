@@ -13,7 +13,8 @@ class UpdateClientRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $user = $this->user();
+        return $user != null && $user->tokenCan('edit');
     }
 
     /**
@@ -28,7 +29,7 @@ class UpdateClientRequest extends FormRequest
                 'firstName' => 'required|alpha',
                 'lastName' => 'required|alpha',
                 'email' => 'required|email',
-                'phoneNumber' => 'required'
+                'phoneNumber' => 'required|regex:/\+371[0-9]{8}/'
             ];
         } else {
             // PATCH request
@@ -36,7 +37,7 @@ class UpdateClientRequest extends FormRequest
                 'firstName' => 'sometimes|required',
                 'lastName' => 'sometimes|required',
                 'email' => 'sometimes|required|email',
-                'phoneNumber' => 'sometimes|required'
+                'phoneNumber' => 'sometimes|required|regex:/\+371[0-9]{8}/'
             ];
 
         }
