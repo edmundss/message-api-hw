@@ -4,7 +4,7 @@
 
 - git clone https://github.com/edmundss/message-api-hw.git
 - cd message-api-hw
-- cp .env.example .emv
+- cp .env.example .env
 - composer install (you may use --ignore-platform-req=ext-sockets)
 - bash ./vendor/laravel/sail/bin/sail up -d
 - bash ./vendor/laravel/sail/bin/sail artisan migrate
