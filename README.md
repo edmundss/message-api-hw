@@ -8,6 +8,7 @@
 - composer install (you may use --ignore-platform-req=ext-sockets)
 - bash ./vendor/laravel/sail/bin/sail up -d
 - bash ./vendor/laravel/sail/bin/sail artisan migrate
+- bash ./vendor/laravel/sail/bin/sail artisan queue:work
 
 ## To run automated tests
 
