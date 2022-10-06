@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Str;
 use Tests\TestCase;
+use Laravel\Sanctum\Sanctum;
 
 class NotificationTest extends TestCase
 {
@@ -52,8 +53,10 @@ class NotificationTest extends TestCase
 
     public function test_user_can_store_notification()
     {
-
-        $user = User::factory()->create();
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['create']
+        );
         $client = Client::factory()->create();
 
         $input = [
@@ -63,7 +66,6 @@ class NotificationTest extends TestCase
         ];
 
         $response = $this
-        ->actingAs($user, 'sanctum')
         ->withHeaders(['Accept' => 'application/json'])
         ->post('/api/v1/notification', $input);
 
@@ -97,7 +99,10 @@ class NotificationTest extends TestCase
 
     public function test_store_notification_request_is_validated()
     {
-        $user = User::factory()->create();
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['create']
+        );
 
         $input = [
             "clientId" => Str::uuid(),
@@ -106,7 +111,6 @@ class NotificationTest extends TestCase
         ];
 
         $response = $this
-        ->actingAs($user, 'sanctum')
         ->withHeaders(['Accept' => 'application/json'])
         ->post('/api/v1/notification', $input);
 
@@ -115,7 +119,10 @@ class NotificationTest extends TestCase
 
     public function test_user_can_store_multiple_notification()
     {
-        $user = User::factory()->create();
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['create']
+        );
         $client = Client::factory()->create();
 
         $input = [
@@ -137,7 +144,6 @@ class NotificationTest extends TestCase
         ];
 
         $response = $this
-        ->actingAs($user, 'sanctum')
         ->withHeaders(['Accept' => 'application/json'])
         ->post('/api/v1/notification/bulk', $input);
 
@@ -175,7 +181,10 @@ class NotificationTest extends TestCase
 
     public function test_bulk_store_notification_request_is_validated()
     {
-        $user = User::factory()->create();
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['create']
+        );
         $input = [
             [
                 "channel" => "sms",
@@ -194,7 +203,6 @@ class NotificationTest extends TestCase
         ];
 
         $response = $this
-        ->actingAs($user, 'sanctum')
         ->withHeaders(['Accept' => 'application/json'])
         ->post('/api/v1/notification/bulk', $input);
 

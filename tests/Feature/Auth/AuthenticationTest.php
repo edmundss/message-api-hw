@@ -22,7 +22,7 @@ class AuthenticationTest extends TestCase
 
         $response
         ->assertOk()
-        ->assertJsonStructure(['data' => ['accessToken']]);
+        ->assertJsonStructure(['readerAccessToken', 'editorAccessToken']);
     }
 
     public function test_users_can_not_authenticate_to_api_with_invalid_password()

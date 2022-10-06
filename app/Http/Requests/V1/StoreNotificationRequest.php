@@ -16,7 +16,7 @@ class StoreNotificationRequest extends FormRequest
     public function authorize()
     {
         $user = $this->user();
-        return $user->tokenCan('fzfdsfsfsdfs');
+        return $user != null && $user->tokenCan('create');
     }
 
     /**
